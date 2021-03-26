@@ -104,7 +104,7 @@ public final class ZksCrypto {
      * @param message message for signing
      * @return instance of signature container
      */
-    public ZksSignature signMessage(final ZksPrivateKey privateKey, byte[] message) throws ZksMusigTooLongException {
+    public ZksSignature signMusig(final ZksPrivateKey privateKey, byte[] message) throws ZksMusigTooLongException {
         ZksSignature.ByReference signature =  new ZksSignature.ByReference();
         int resultCode = this.crypto.zks_crypto_sign_musig((ZksPrivateKey.ByReference) privateKey, message, message.length, signature);
 
@@ -115,7 +115,7 @@ public final class ZksCrypto {
         }
     }
 
-    public boolean verifyMessage(final ZksPackedPublicKey publicKey, final ZksSignature signature, final byte[] message) throws Exception {
+    public boolean verifyMusig(final ZksPackedPublicKey publicKey, final ZksSignature signature, final byte[] message) {
         int resultCode = this.crypto.zks_crypto_verify_musig(message, message.length, (ZksPackedPublicKey.ByReference) publicKey, (ZksSignature.ByReference) signature);
 
         return resultCode == 0;

@@ -54,7 +54,7 @@ class ZksCryptoTest {
     @Test
     void signMessage() throws ZksSeedTooShortException, ZksMusigTooLongException {
         ZksPrivateKey privateKey = cryptoLib.generatePrivateKey(SEED);
-        ZksSignature signature = cryptoLib.signMessage(privateKey, MSG);
+        ZksSignature signature = cryptoLib.signMusig(privateKey, MSG);
 
         assertArrayEquals(signature.getData(), new byte[] {66, 111, 115, 126, -54, 53, 46, -4, 88, -107, 33, 63, -100, -36, -54, -112, -94, 98, 68, -8, 76, -62, -107, -64, 31, 0, 20, 92, 6, -56, 13, 37, 62, 28, -71, -3, 66, -73, 96, -128, -60, -45, 32, 85, -74, -119, -22, 62, 1, -27, 111, -104, -128, -29, -111, 47, -101, 27, -103, -63, -28, 91, 80, 4});
     }
@@ -64,9 +64,9 @@ class ZksCryptoTest {
         ZksPrivateKey privateKey = cryptoLib.generatePrivateKey(SEED);
         ZksPackedPublicKey publicKey = cryptoLib.getPublicKey(privateKey);
 
-        ZksSignature signature = cryptoLib.signMessage(privateKey, MSG);
+        ZksSignature signature = cryptoLib.signMusig(privateKey, MSG);
 
-        boolean verified = cryptoLib.verifyMessage(publicKey, signature, MSG);
+        boolean verified = cryptoLib.verifyMusig(publicKey, signature, MSG);
 
         assertTrue(verified);
     }
@@ -79,6 +79,6 @@ class ZksCryptoTest {
     @Test
     void mustThrowOnMusigMessageTooLong() throws ZksSeedTooShortException {
         ZksPrivateKey privateKey = cryptoLib.generatePrivateKey(SEED);
-        assertThrows(ZksMusigTooLongException.class, () -> cryptoLib.signMessage(privateKey, Arrays.copyOf(MSG, 93)));
+        assertThrows(ZksMusigTooLongException.class, () -> cryptoLib.signMusig(privateKey, Arrays.copyOf(MSG, 93)));
     }
 }

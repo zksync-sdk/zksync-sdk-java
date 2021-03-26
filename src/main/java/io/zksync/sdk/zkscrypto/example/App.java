@@ -28,12 +28,20 @@ public class App {
             ZksPrivateKey privateKey = crypto.generatePrivateKey(seed);
             ZksPackedPublicKey publicKey = crypto.getPublicKey(privateKey);
             ZksPubkeyHash pubkeyHash = crypto.getPublicKeyHash(publicKey);
-            ZksSignature signature = crypto.signMessage(privateKey, msg);
+            ZksSignature signature = crypto.signMusig(privateKey, msg);
             System.out.printf("Seed: %s\n", Numeric.toHexString(seed));
             System.out.printf("Private key: %s\n", Numeric.toHexString(privateKey.getData()));
             System.out.printf("Public key: %s\n", Numeric.toHexString(publicKey.getData()));
             System.out.printf("Public key hash: %s\n", Numeric.toHexString(pubkeyHash.getData()));
             System.out.printf("Signature: %s\n", Numeric.toHexString(signature.getData()));
+
+            boolean verified = crypto.verifyMusig(publicKey, signature, msg);
+
+            if (verified) {
+                System.out.println("Signature verified");
+            } else {
+                System.out.println("Signature verification failed");
+            }
         } catch (ZksSeedTooShortException | ZksMusigTooLongException e) {
             System.err.println(e);
         }
