@@ -34,12 +34,12 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y build-essential
       - name: Build project using cargo
         run: cargo build --release
-        working-directory: zks-crypto/zks-crypto-c
+        working-directory: zksync-crypto-c
       - name: Save artifacts
         uses: actions/upload-artifact@v2
         with:
           name: zks-crypto-lib
-          path: zks-crypto/zks-crypto-c/target/release/*zks_crypto.*
+          path: zksync-crypto-c/target/release/*zks_crypto.*
   test:
     name: Test java project
     runs-on: ubuntu-latest
@@ -56,7 +56,6 @@ jobs:
         with:
           java-version: 13
       - name: Build with Gradle
-        working-directory: java/zksync-crypto
         run: mvn test
   build_and_publish:
     name: Build jar library
@@ -76,17 +75,11 @@ jobs:
           name: zks-crypto-lib
           path: java/zksync-crypto
       - run: mkdir -p ./src/main/resources/natives/osx_64 && cp ./libzks_crypto.dylib ./src/main/resources/natives/osx_64
-        working-directory: java/zksync-crypto
       - run: mkdir -p ./src/main/resources/natives/osx_32 && cp ./libzks_crypto.dylib ./src/main/resources/natives/osx_32
-        working-directory: java/zksync-crypto
       - run: mkdir -p ./src/main/resources/natives/linux_64 && cp ./libzks_crypto.so ./src/main/resources/natives/linux_64
-        working-directory: java/zksync-crypto
       - run: mkdir -p ./src/main/resources/natives/linux_32 && cp ./libzks_crypto.so ./src/main/resources/natives/linux_32
-        working-directory: java/zksync-crypto
       - run: mkdir -p ./src/main/resources/natives/windows_64 && cp ./zks_crypto.dll ./src/main/resources/natives/windows_64
-        working-directory: java/zksync-crypto
       - run: mkdir -p ./src/main/resources/natives/windows_32 && cp ./zks_crypto.dll ./src/main/resources/natives/windows_32
-        working-directory: java/zksync-crypto
       - name: Set up JDK 13
         uses: actions/setup-java@v1
         with:
@@ -95,7 +88,6 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Build with Maven
-        working-directory: java/zksync-crypto
         run: mvn install
         env:
           APP_VERSION: ${{ steps.get_version.outputs.APP }}
@@ -103,9 +95,8 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: zksync-crypto-java-dist
-          path: java/zksync-crypto/target/*.jar
+          path: target/*.jar
       - name: Publish package
-        working-directory: java/zksync-crypto
         run: mvn clean deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
