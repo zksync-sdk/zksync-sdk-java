@@ -35,7 +35,7 @@ public class App {
             System.out.printf("Public key hash: %s\n", Numeric.toHexString(pubkeyHash.getData()));
             System.out.printf("Signature: %s\n", Numeric.toHexString(signature.getData()));
 
-            boolean verified = crypto.verifyMessage(publicKey, signature, msg);
+            boolean verified = crypto.verifySignature(publicKey, signature, msg);
 
             if (verified) {
                 System.out.println("Signature verified");

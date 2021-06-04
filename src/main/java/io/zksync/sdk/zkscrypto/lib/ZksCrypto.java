@@ -123,7 +123,7 @@ public final class ZksCrypto {
      * @param message - message used for creating the signature
      * @return true if signature is valid, false otherwise
      */
-    public boolean verifyMessage(final ZksPackedPublicKey publicKey, final ZksSignature signature, final byte[] message) {
+    public boolean verifySignature(final ZksPackedPublicKey publicKey, final ZksSignature signature, final byte[] message) {
         int resultCode = this.crypto.zks_crypto_verify_musig(message, message.length, (ZksPackedPublicKey.ByReference) publicKey, (ZksSignature.ByReference) signature);
 
         return resultCode == 0;

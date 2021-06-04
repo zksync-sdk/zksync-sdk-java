@@ -66,7 +66,7 @@ class ZksCryptoTest {
 
         ZksSignature signature = cryptoLib.signMessage(privateKey, MSG);
 
-        boolean verified = cryptoLib.verifyMessage(publicKey, signature, MSG);
+        boolean verified = cryptoLib.verifySignature(publicKey, signature, MSG);
 
         assertTrue(verified);
     }
