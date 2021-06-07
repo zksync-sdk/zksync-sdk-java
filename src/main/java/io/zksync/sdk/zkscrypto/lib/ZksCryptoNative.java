@@ -4,6 +4,7 @@ import com.sun.jna.Library;
 import io.zksync.sdk.zkscrypto.lib.entity.ZksPackedPublicKey;
 import io.zksync.sdk.zkscrypto.lib.entity.ZksPrivateKey;
 import io.zksync.sdk.zkscrypto.lib.entity.ZksPubkeyHash;
+import io.zksync.sdk.zkscrypto.lib.entity.ZksRescueHashOrders;
 import io.zksync.sdk.zkscrypto.lib.entity.ZksSignature;
 
 public interface ZksCryptoNative extends Library {
@@ -38,5 +39,11 @@ public interface ZksCryptoNative extends Library {
             long message_len,
             ZksPackedPublicKey.ByReference public_key,
             ZksSignature.ByReference signature
+    );
+
+    void rescue_hash_orders(
+        byte[] message,
+        long message_len,
+        ZksRescueHashOrders.ByReference hash
     );
 }

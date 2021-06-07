@@ -5,6 +5,7 @@ import com.sun.jna.NativeLibrary;
 import io.zksync.sdk.zkscrypto.lib.entity.ZksPackedPublicKey;
 import io.zksync.sdk.zkscrypto.lib.entity.ZksPrivateKey;
 import io.zksync.sdk.zkscrypto.lib.entity.ZksPubkeyHash;
+import io.zksync.sdk.zkscrypto.lib.entity.ZksRescueHashOrders;
 import io.zksync.sdk.zkscrypto.lib.entity.ZksSignature;
 import io.zksync.sdk.zkscrypto.lib.exception.ZksMusigTooLongException;
 import io.zksync.sdk.zkscrypto.lib.exception.ZksSeedTooShortException;
@@ -127,6 +128,19 @@ public final class ZksCrypto {
         int resultCode = this.crypto.zks_crypto_verify_musig(message, message.length, (ZksPackedPublicKey.ByReference) publicKey, (ZksSignature.ByReference) signature);
 
         return resultCode == 0;
+    }
+
+    /**
+     * Hash serialized orders
+     * 
+     * @param orders - Concatenated 2 serialized orders
+     * @return instance of rescue hash container
+     */
+    public ZksRescueHashOrders rescueHashOrders(final byte[] orders) {
+        ZksRescueHashOrders.ByReference result = new ZksRescueHashOrders.ByReference();
+        this.crypto.rescue_hash_orders(orders, orders.length, result);
+
+        return result;
     }
 
 }
